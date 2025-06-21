@@ -25,12 +25,39 @@ def get_video_transcript(video_id):
             'language':'en'
 
         }
-    except Exception as e2:
-        return{
-            'Success':True,
-            'error': f"cloud not retrieve the transcript: {str(e2)}"
+    except Exception as e:
+        # Try alternative languages if English fails
+        try:
+            # Get available transcripts
+            transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
             
-        }
+            # Try to get any available transcript
+            for transcript in transcript_list:
+                try:
+                    fetched_transcript = transcript.fetch()
+                    formatter = TextFormatter()
+                    transcript_text = formatter.format_transcript(fetched_transcript)
+                    
+                    return {
+                        'success': True,
+                        'transcript': transcript_text,
+                        'language': transcript.language_code
+                    }
+                except:
+                    continue
+                    
+            # If all fails, return error
+            return {
+                'success': False,
+                'error': f"Could not retrieve the transcript: {str(e)}"
+            }
+            
+        except Exception as e2:
+            return {
+                'success': False,
+                'error': f"Could not retrieve the transcript: {str(e2)}"
+            }
+
     
 def clean_transcript(transcript):
     cleaned=re.sub(r'\s+',' ',transcript)

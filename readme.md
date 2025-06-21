@@ -10,3 +10,6 @@ This python file will primarily handle all youtube related operations. This file
 
 # Summarizer file
 This python file will mainly constitute summarization logic of the project. This project mainly involves intializing hugging face AI model named BART. This model will be used primarily to summarize the youtube videos. 
+
+# App File 
+This is the main file of the Summarizer. Here, we have effectively created a webpage for youtube summarizer using streamlit. It creates a user-friendly web interface where users can input a YouTube video URL to receive an AI-generated summary and key points of the video content.
